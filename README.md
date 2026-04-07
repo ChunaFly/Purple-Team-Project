@@ -1,18 +1,27 @@
 # Purple Team Project: Both Sides Of The Same Incident
 
 Table of Contents
-- [Purple Team Project: Both Sides Of The Same Incident](#purple-team-project-both-sides-of-the-same-incident)
-  - [1. Introduction](#1-introduction)
-  - [2. Infrastructure](#2-infrastructure)
-    - [2.1 Target Configuration (Vulnerability Simulation)](#21-target-configuration-vulnerability-simulation)
-  - [3. Techniques](#3-techniques)
-      - [3.1 Reconnaissance](#31-reconnaissance)
-      - [Active Scanning (T1595)](#active-scanning-t1595)
-      - [Gather Victim Host Information (T1592)](#gather-victim-host-information-t1592)
-    - [3.2 Initial Access](#32-initial-access)
-      - [Brute Force: Password Guessing (T1110.001)](#brute-force-password-guessing-t1110001)
-      - [Windows Management Instrumentation (T1047)](#windows-management-instrumentation-t1047)
-      - [Remote Services: SSH (T1021.004)](#remote-services-ssh-t1021004)
+1. [Introduction](#1-introduction)  
+2. [Infrastructure](#2-infrastructure)
+    * [**2.1 Target Configuration (Vulnerability Simulation)**](#21-target-configuration-vulnerability-simulation)
+3. [Techniques](#3-techniques)
+   * [**3.1 Reconnaissance**](#31-reconnaissance)  
+        * [Active Scanning](#active-scanning-t1595) [(T1595)](https://attack.mitre.org/techniques/T1595/)
+        * [Gather Victim Host Information](#gather-victim-host-information-t1592) [(T1592)](https://attack.mitre.org/techniques/T1592/)
+    * [**3.2 Initial Access**](#32-initial-access)
+        * [Brute Force Password Guessing](#brute-force-password-guessing-t1110001) [(T1110.001)](https://attack.mitre.org/techniques/T1110/001/)
+        * [Windows Management Instrumentation](#windows-management-instrumentation-t1047) [(T1047)](https://attack.mitre.org/techniques/T1047/)
+        * [Remote Services: SSH](#remote-services-ssh-t1021004) [(T1021.004)](https://attack.mitre.org/techniques/T1021/004/)
+    * **3.3 Post-Exploitation** (**Work In Progress**)
+        * Privilege Escalation: Highjack Execution Flow: Service File Permission Weakness [(T1574.010)](https://attack.mitre.org/techniques/T1574/010/)
+        * Privilege Escalation: Bypass User Access Control [(T1548.002)](https://attack.mitre.org/techniques/T1548/002/)
+        * Exfiltration Over C2 Channel [(T1041)](https://attack.mitre.org/techniques/T1041/)
+    *  **3.4 Persistence**
+       * Registry Run Keys / Startup Folder [(T1547.001)](https://attack.mitre.org/techniques/T1547/001/)
+       * Scheduled Tasks [(T1053.005)](https://attack.mitre.org/techniques/T1053/005/)
+4. Conclusion
+5. Lessons Learned
+6. References
 
 
 ## 1. Introduction
