@@ -38,7 +38,8 @@ This project has purposely [disabled or modified some defense capabilities](#21-
 
 ## 2. Infrastructure
 For a better view of the network environment and telemtry flow, see the diagram below:
-![Purple Team Lab Infrastructure](\Purple_Team_Lab_Infrastructure.png)
+![Purple Team Lab Infrastructure](/Purple_Team_Lab_Infrastructure.png)
+
 _Figure 1: Lab's infrastructure_
 
 This lab's infrastructure is composed of 4 Virtual Machines (VMs) each serving a role in thje security lifecycle:
@@ -95,7 +96,8 @@ One of the most important phases in penetration testing is Reconnaissance. It al
 **Blue Team analysis:** Nmap doesn't complete the TCP's "Three way Handshake" or opens and closes a connection very quickly. Often, Windows doesn't consider it an error and doesn't log it in Event Viewer. Wazuh is a HIDS (Host Intrusion Detection System) and for it to be logged, it is necessary to have a NIDS (Network Intrusion Detection System) like Suricata or Snort.
 
 
- ![Initial Scan using Nmap](\Prints\Reconnaissance\Initial_Scan.png)
+ ![Initial Scan using Nmap](/Prints/Reconnaissance/Initial_Scan.png)
+ 
  _Figure 2: Initial Nmap scan with services running_
 
 #### Gather Victim Host Information (T1592)
@@ -119,7 +121,8 @@ _Wazuh rule level ranges from 0 to 16, it determines the severity and alerting a
 **Rule 60115 Level 9 - EventID 4740:** User account was locked out.
 _While rules **60122** and **60204** have the same EventID, Wazuh analyzes the behavior that is happening. After multiple attempts in a short time span the SIEM identifies this as a potential **Brute Force** attack and triggers a higher-severity alert._
 
-![Brute Force detection](\Prints\Initial-Access\Brute-Force-Fail-Wazuh.png)
+![Brute Force detection](/Prints/Initial-Access/Brute-Force-Fail-Wazuh.png)
+
 _Figure 3: Wazuh Brute Force detection showing Multiple Logon Failures and Account Lockout._
 
 For brute force to be successful, login attempts have to be set to a high amount for testing and telemetry gathering:
@@ -127,7 +130,8 @@ For brute force to be successful, login attempts have to be set to a high amount
 
 After the threshold is set, another attempt was made and NetExec successfully found a match for the username we identified in the Reconnaissance phase.
 
-![Brute Force success](\Prints\Initial-Access\Brute-Force-Success.png)
+![Brute Force success](/Prints/Initial-Access/Brute-Force-Success.png)
+
 _Figure 4: NetExec found a match for WINDOWS-VICTIM_.
 
 This time is possible to observe a successful logon in the telemetry. Right after a match was found, the tool logs off, because its purpose was only to discover the password, not establish a connection.
@@ -135,7 +139,8 @@ This time is possible to observe a successful logon in the telemetry. Right afte
 **Rule 92652 Level 6 - EventID 4624:** An account was successfully logged on.
 **Rule 60137 Level 3 - EventID 4623:** Impacket has disconnected.
 
-![Wazuh detecting successful logon](\Prints\Initial-Access\Brute-Force-Logon-Wazuh.png)
+![Wazuh detecting successful logon](/Prints/Initial-Access/Brute-Force-Logon-Wazuh.png)
+
 _Figure 5: Wazuh logs detecting a new logon in the network._
 
 #### Windows Management Instrumentation (T1047)
@@ -143,21 +148,25 @@ After obtaining the creditials, the next step is to connect to the WMI. I'll be 
 
 Although the credentials were valid, the connection via WMI failed. This is due to WMI being a remote administrative tool, which implies that you have to be part of the administrator group. From an attacker perspective what can be deducted is that this user has only low-privileges meaning that another route has to be identified to compromise this endpoint.
 
-![WMI Connection Failed](\Prints\Initial-Access\WMI-Failed.png)
+![WMI Connection Failed](/Prints/Initial-Access/WMI-Failed.png)
+
 _Figure 6: WMI access denied due to a low-privilege user even with valid credentials_
+
 #### Remote Services: SSH (T1021.004)
 SSH is one of the most used protocols for remote access. Although secure, it is still subject to human mishandling when lost or leaked credentials fall into the hands of bad actors.
 
 After the attempt to compromise the WMI failed, another network scan was performed to observe if a different vector could be exploited.
 
-![New Nmap scan performed](\Prints\Initial-Access\New-Nmap-Scan.png)
+![New Nmap scan performed](/Prints/Initial-Access/New-Nmap-Scan.png)
+
 _Figure 7: New Nmap scan was performed in search of another vector to be exploited._
 
 As seen on _Figure 8_ we can observe that now there is an SSH service open on Port 22.
 
 For this technique, it will be used the same credentials that have been identified during previous phases.
 
-![Connecting to SSH](\Prints\Initial-Access\SSH-Connection.png)
+![Connecting to SSH](/Prints/Initial-Access/SSH-Connection.png)
+
 _Figure 8: Successful login into SSH using valid credentials discovered during previous phases._
 
 The ```whoami```command demonstrates that we successfully compromised the target.
@@ -168,6 +177,7 @@ _The **WARNING!** sign is a disclaimer from recent versions of OpenSSH informing
 
 The telemetry also shows the closure of operational sessions after authentication, tagged by the Rule 60137 (EventID 4634). This behavior is common in connections via network (_Logon type 3_), where the operating system closes the authentication process as soon as the interactive shell is established for the user.
 
-![Wazuh detecting a new login into SSH](\Prints\Initial-Access\SSH-Log-Wazuh.png)
+![Wazuh detecting a new login into SSH](/Prints/Initial-Access/SSH-Log-Wazuh.png)
+
 _Figure 9: Wazuh detecting a new login in SSH._
  
